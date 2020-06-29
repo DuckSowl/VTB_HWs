@@ -8,27 +8,14 @@
 
 import UIKit
 
-class AccountViewController: UIViewController {
+final class AccountViewController: UIViewController {
     
-    // Bad place to store constants. Looking for a better solution...
-    private static let menuIconColor = UIColor(red: 0.384, green: 0.482, blue: 0.992, alpha: 1)
-    private static let menuIconMyDataColor = UIColor(red: 0.349, green: 0.655, blue: 0.843, alpha: 1)
-    private static let backgroundColor = UIColor(red: 0.929, green: 0.937, blue: 0.949, alpha: 1)
-    private static let borderColor = UIColor(red: 0.812, green: 0.808, blue: 0.824, alpha: 1)
-    private static let mailColor = UIColor(red: 0.646, green: 0.646, blue: 0.646, alpha: 1)
-    
-    private let menuItems = [Menu(title: "Мои данные", iconColor: menuIconMyDataColor),
-                             Menu(title: "Связанные соц.сети", iconColor: menuIconColor),
-                             Menu(title: "Уведомления", iconColor: menuIconColor),
-                             Menu(title: "Языки", iconColor: menuIconColor)]
-    
-    private let contactMenuItems = [Menu(title: "Обратная связь", hasIcon: false),
-                                    Menu(title: "Вопросы о Followme", hasIcon: false)]
-    
-    private let cellID = "cell"
     private let headerView = UIView()
+    private let tableViewManager = AccountTableViewManager()
     
     private(set) var person: Person
+    
+    // MARK: - Initializers
     
     init(person: Person) {
         self.person = person
@@ -38,18 +25,8 @@ class AccountViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Example layout comparison
-//        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-//        backgroundImage.image = UIImage(named: "example-layout")
-//        backgroundImage.contentMode = .scaleAspectFill
-//        backgroundImage.alpha = 0.4
-//        self.view.addSubview(backgroundImage)
-    }
     
+    // MARK: - View Lifecycle
     
     override func loadView() {
         view = UIView()
@@ -58,14 +35,59 @@ class AccountViewController: UIViewController {
         constructHeaderView()
         constructTableView()
         constructBottomMunuView()
+        
+        // Example layout comparison
+//        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+//        backgroundImage.image = UIImage(named: "example-layout")
+//        backgroundImage.contentMode = .scaleAspectFill
+//        backgroundImage.alpha = 0.4
+//        self.view.addSubview(backgroundImage)
     }
+}
+
+
+
+extension AccountViewController {
+    
+    // MARK: - Constants
+    
+    private enum ColorScheme {
+        static let backgroundColor = UIColor(red: 0.929, green: 0.937, blue: 0.949, alpha: 1)
+        static let borderColor = UIColor(red: 0.812, green: 0.808, blue: 0.824, alpha: 1)
+        static let mailColor = UIColor(red: 0.646, green: 0.646, blue: 0.646, alpha: 1)
+    }
+    
+    private enum Constant {
+        static let headerHeight = CGFloat(109)
+        static let bottomMenuHeight = CGFloat(57)
+        static let accountImageSize = CGSize(width: 49, height: 49)
+        static let largeFontSize = CGFloat(16)
+        static let mailFontSize = CGFloat(10)
+        static let iconNames = [Asset.bulletList, .checkList, .wallet, .person].map { $0.name }
+        static let iconSizes = [(26, 19), (27, 27), (24, 24), (24, 24)].map {
+            CGSize(width: $0, height: $1)
+        }
+    }
+    
+    private enum Asset: String, RawRepresentable {
+        var name: String { "sprites-\(rawValue)" }
+        
+        case coins
+        case wallet
+        case arrow = "arrow-right"
+        case bulletList = "list-bullet"
+        case checkList = "list-check"
+        case person = "person-circle"
+    }
+    
+    // MARK: - View Construction
     
     private func constructHeaderView() {
         headerView.backgroundColor = .white
         view.addSubview(headerView, constraints: [
             equal(\.topAnchor, constant: 0),
             equal(\.leadingAnchor, constant: 0), equal(\.trailingAnchor, constant: 0),
-            equal(\.heightAnchor, constant: 109)
+            equal(\.heightAnchor, constant: Constant.headerHeight)
         ])
         
         constructAccountInfoView()
@@ -76,29 +98,29 @@ class AccountViewController: UIViewController {
         let accountInfo = UIStackView()
         accountInfo.spacing = 13.0
         accountInfo.alignment = .center
-
+        
         let accountImageView = UIImageView(image: person.image)
-        accountImageView.layer.cornerRadius = 49.0 / 2
+        accountImageView.layer.cornerRadius = Constant.accountImageSize.width / 2
         accountImageView.layer.masksToBounds = true
         accountInfo.addArrangedSubview(accountImageView, constraints: [
-            equal(\.widthAnchor, constant: 49),
-            equal(\.heightAnchor, constant: 49)
+            equal(\.widthAnchor, constant: Constant.accountImageSize.width),
+            equal(\.heightAnchor, constant: Constant.accountImageSize.height)
         ])
-
+        
         let nameLabel = UILabel()
         nameLabel.text = "\(person.firstName) \(person.lastName)"
-        nameLabel.font = .boldSystemFont(ofSize: 16)
-
+        nameLabel.font = .boldSystemFont(ofSize: Constant.largeFontSize)
+        
         let mailLabel = UILabel()
         mailLabel.text = person.mail
-        mailLabel.font = .boldSystemFont(ofSize: 10)
-        mailLabel.textColor = Self.mailColor
-
+        mailLabel.font = .boldSystemFont(ofSize: Constant.mailFontSize)
+        mailLabel.textColor = ColorScheme.mailColor
+        
         let labels = UIStackView(arrangedSubviews: [nameLabel, mailLabel])
         labels.axis = .vertical
         labels.spacing = 0.0
         accountInfo.addArrangedSubview(labels)
-
+        
         headerView.addSubview(accountInfo, constraints: [
             equal(\.topAnchor, constant: 47),
             equal(\.leadingAnchor, constant: 19),
@@ -108,13 +130,13 @@ class AccountViewController: UIViewController {
     private func constructCoinView() {
         let coinView = UIStackView()
         coinView.spacing = 2.6
-
+        
         let coinLabel = UILabel()
         coinLabel.text = "\(person.money)"
-        coinLabel.font = .boldSystemFont(ofSize: 16)
+        coinLabel.font = .boldSystemFont(ofSize: Constant.largeFontSize)
         coinView.addArrangedSubview(coinLabel)
-
-        if let coinImage = UIImage(named: "sprites-coins") {
+        
+        if let coinImage = UIImage(named: Asset.coins.name) {
             let coinImageView = UIImageView(image: coinImage)
             coinImageView.contentMode = .scaleAspectFill
             coinView.addArrangedSubview(coinImageView, constraints: [
@@ -122,13 +144,13 @@ class AccountViewController: UIViewController {
                 equal(\.heightAnchor, constant: 17)
             ])
         }
-
+        
         headerView.addSubview(coinView, constraints: [
             equal(\.topAnchor, constant: 64),
             equal(\.trailingAnchor, constant: -36),
         ])
         
-        if let arrowImage = UIImage(named: "sprites-arrow-right") {
+        if let arrowImage = UIImage(named: Asset.arrow.name) {
             let arrowView = UIImageView(image: arrowImage)
             arrowView.contentMode = .scaleAspectFill
             headerView.addSubview(arrowView, constraints: [
@@ -147,32 +169,27 @@ class AccountViewController: UIViewController {
             equal(\.leadingAnchor), equal(\.trailingAnchor),
             equal(\.bottomAnchor)
         ])
-
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(MenuCell.self, forCellReuseIdentifier: cellID)
+        
+        tableView.delegate = tableViewManager
+        tableView.dataSource = tableViewManager
+        tableView.register(MenuCell.self, forCellReuseIdentifier: tableViewManager.cellID)
     }
     
     private func constructBottomMunuView() {
         let bottomMenuView = UIStackView()
         bottomMenuView.distribution = .equalSpacing
         bottomMenuView.alignment = .center
-        
-        let iconNames = ["list-bullet", "list-check", "wallet",  "person-circle"]
-        let iconSizes = [(26, 19), (27, 27), (24, 24), (24, 24)].map {
-            CGSize(width: $0, height: $1)
-        }
-        
-        zip(iconNames, iconSizes).forEach { iconName, size in
-            if let iconImage = UIImage(named: "sprites-\(iconName)") {
+
+        zip(Constant.iconNames, Constant.iconSizes).forEach { iconName, iconSize in
+            if let iconImage = UIImage(named: iconName) {
                 let iconView = UIImageView(image: iconImage)
                 bottomMenuView.addArrangedSubview(iconView, constraints: [
-                    equal(\.widthAnchor, constant: size.width),
-                    equal(\.heightAnchor, constant: size.height)
+                    equal(\.widthAnchor, constant: iconSize.width),
+                    equal(\.heightAnchor, constant: iconSize.height)
                 ])
             }
         }
-
+        
         let backgroundView = UIView()
         backgroundView.backgroundColor = .white
         backgroundView.layer.cornerRadius = 10
@@ -187,49 +204,7 @@ class AccountViewController: UIViewController {
             equal(\.leadingAnchor, constant: 33),
             equal(\.trailingAnchor, constant: -31),
             equal(\.bottomAnchor, constant: -34),
-            equal(\.heightAnchor, constant: 57)
+            equal(\.heightAnchor, constant: Constant.bottomMenuHeight)
         ])
-    }
-}
-
-extension AccountViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        tableView.headerView(forSection: section)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 15.5
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        tableView.footerView(forSection: section)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 24
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt: IndexPath) -> CGFloat {
-        return (0...1).contains(heightForRowAt.row) ? 44 : 42
-    }
-}
-
-extension AccountViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? menuItems.count : contactMenuItems.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID) as? MenuCell
-        
-        let row = indexPath.row
-        let menuItem = indexPath.section == 0 ? menuItems[row]: contactMenuItems[row]
-        cell?.menuItem = menuItem
-        
-        return cell!
     }
 }

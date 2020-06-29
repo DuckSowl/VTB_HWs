@@ -24,11 +24,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // UIKitExample
         let accountImage = UIImage(named: "example-avatar") ?? UIImage()
         window?.rootViewController =
-            AccountViewController(person: .init(image: accountImage,
-                                                firstName: "Ishxan",
-                                                lastName: "Aslanyan",
-                                                mail: "Ishxan.aslanyan@mail.ru",
-                                                money: 15))
+            AccountViewController(person: Person(image: accountImage,
+                                                 firstName: "Ishxan",
+                                                 lastName: "Aslanyan",
+                                                 mail: "Ishxan.aslanyan@mail.ru",
+                                                 money: 15))
         
         // SwiftUIExample
 //        window?.rootViewController = UIHostingController(rootView:

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MenuCell: UITableViewCell {
+final class MenuCell: UITableViewCell {
     
     private let iconView = UIView()
     private let textView = UILabel()
@@ -23,21 +23,27 @@ class MenuCell: UITableViewCell {
         }
     }
     
+    private enum Constant {
+        static let personSpriteName = "sprites-person"
+        static let imageSize = CGSize(width: 27, height: 27)
+        static let arrowSpriteName = "sprites-arrow-right"
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         imageView?.image = UIImage()
-        self.separatorInset = .init(top: 0, left: 59, bottom: 0, right: 0)
+        self.separatorInset = UIEdgeInsets(top: 0, left: 59, bottom: 0, right: 0)
         
         iconView.layer.cornerRadius = 5
         self.addSubview(iconView, constraints: [
-            equal(\.bottomAnchor, constant: -6),
-            equal(\.heightAnchor, constant: 27),
-            equal(\.widthAnchor, constant: 27),
-            equal(\.leadingAnchor, constant: 14)
+            equal(\.widthAnchor, constant: Constant.imageSize.width),
+            equal(\.heightAnchor, constant: Constant.imageSize.height),
+            equal(\.leadingAnchor, constant: 14),
+            equal(\.bottomAnchor, constant: -6)
         ])
         
-        let image = UIImage(named: "sprites-person")
+        let image = UIImage(named: Constant.personSpriteName)
         let imageView = UIImageView(image: image)
         
         iconView.addSubview(imageView, constraints: [
@@ -53,7 +59,7 @@ class MenuCell: UITableViewCell {
         
         textView.font = .systemFont(ofSize: 14)
                 
-        if let arrowImage = UIImage(named: "sprites-arrow-right") {
+        if let arrowImage = UIImage(named: Constant.arrowSpriteName) {
             let arrowView = UIImageView(image: arrowImage)
             arrowView.contentMode = .scaleAspectFill
             addSubview(arrowView, constraints: [

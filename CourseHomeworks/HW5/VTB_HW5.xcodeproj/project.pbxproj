@@ -11,6 +11,7 @@
 		3A24B6F424A866F10012E757 /* ConstraintHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A24B6F324A866F10012E757 /* ConstraintHelpers.swift */; };
 		3A24B6F624A8A8940012E757 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A24B6F524A8A8940012E757 /* Menu.swift */; };
 		3A24B6F924A8AAB30012E757 /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A24B6F824A8AAB30012E757 /* MenuCell.swift */; };
+		3A309BAC24A9F419000C103B /* AccountTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A309BAB24A9F419000C103B /* AccountTableViewManager.swift */; };
 		3A41D98F24A6422000277297 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41D98E24A6422000277297 /* AppDelegate.swift */; };
 		3A41D99124A6422000277297 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41D99024A6422000277297 /* SceneDelegate.swift */; };
 		3A41D99324A6422000277297 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41D99224A6422000277297 /* AccountViewController.swift */; };
@@ -24,6 +25,7 @@
 		3A24B6F324A866F10012E757 /* ConstraintHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintHelpers.swift; sourceTree = "<group>"; };
 		3A24B6F524A8A8940012E757 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		3A24B6F824A8AAB30012E757 /* MenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
+		3A309BAB24A9F419000C103B /* AccountTableViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewManager.swift; sourceTree = "<group>"; };
 		3A41D98B24A6422000277297 /* VTB_HW5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VTB_HW5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A41D98E24A6422000277297 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A41D99024A6422000277297 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 			children = (
 				3A24B6F724A8A8B00012E757 /* Model */,
 				3A41D99224A6422000277297 /* AccountViewController.swift */,
+				3A309BAB24A9F419000C103B /* AccountTableViewManager.swift */,
 				3A24B6F824A8AAB30012E757 /* MenuCell.swift */,
 				3A24B6F324A866F10012E757 /* ConstraintHelpers.swift */,
 			);
@@ -198,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A24B6F224A7D8D00012E757 /* Person.swift in Sources */,
+				3A309BAC24A9F419000C103B /* AccountTableViewManager.swift in Sources */,
 				3A41D99324A6422000277297 /* AccountViewController.swift in Sources */,
 				3A24B6F624A8A8940012E757 /* Menu.swift in Sources */,
 				3A41D98F24A6422000277297 /* AppDelegate.swift in Sources */,
