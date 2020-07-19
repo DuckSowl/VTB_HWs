@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:HW3+UI.xcodeproj">
+      location = "self:/Users/Anton/Swift/VTB_HWs/CourseHomeworks/HW6/VTB-HW6.xcodeproj">
    </FileRef>
 </Workspace>
