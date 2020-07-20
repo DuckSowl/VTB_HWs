@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  HW4
+//  VTB-HW4
 //
 //  Created by Anton Tolstov on 23.06.2020.
 //  Copyright © 2020 Anton Tolstov. All rights reserved.
@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = RandomImageViewController()
+        window?.rootViewController = RandomImageConfigurator.configure()
         window?.makeKeyAndVisible()
     }
 

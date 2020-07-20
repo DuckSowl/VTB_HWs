@@ -1,6 +1,6 @@
 //
 //  RandomImageViewController.swift
-//  HW4
+//  VTB-HW4
 //
 //  Created by Anton Tolstov on 23.06.2020.
 //  Copyright © 2020 Anton Tolstov. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol RandomImageViewInputs {
+protocol RandomImageViewInputs: AnyObject {
     func loading()
     func set(image: UIImage)
     func unableToLoad()
@@ -21,7 +21,19 @@ protocol RandomImageViewOutputs {
 
 final class RandomImageViewController: UIViewController {
     
-    var presenter: RandomImageViewOutputs?
+    let presenter: RandomImageViewOutputs
+    
+    // MARK: - Initializers
+    
+    init(with presenter: RandomImageViewOutputs) {
+        self.presenter = presenter
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Subviews
     
@@ -64,7 +76,7 @@ final class RandomImageViewController: UIViewController {
         view.backgroundColor = .white
         
         setupStackView()
-        presenter?.viewDidLoad()
+        presenter.viewDidLoad()
     }
     
     private func setupStackView() {
@@ -91,7 +103,7 @@ final class RandomImageViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func reloadImage() {
-        presenter?.reloadImage()
+        presenter.reloadImage()
     }
     
     // MARK: - Alert Views
@@ -118,7 +130,8 @@ final class RandomImageViewController: UIViewController {
         static let reloadImageButtonCornerRadius = CGFloat(10)
         
         static let unableToLoadAlertTitle = "Unable to load image!"
-        static let unableToLoadAlertMessage = "Check your internet connection and try again"
+        static let unableToLoadAlertMessage = "Check your internet connection or maybe " +
+                                              "service isn't working right now"
         static let unableToLoadAlertRetryTitle = "Retry"
         static let unableToLoadAlertCancelTitle = "Cancel"
         
@@ -130,16 +143,23 @@ final class RandomImageViewController: UIViewController {
 
 extension RandomImageViewController: RandomImageViewInputs {
     func loading() {
-        imageView.image = nil
-        reloadImageActivityIndicator.startAnimating()
+        DispatchQueue.main.async { [weak self] in
+            self?.imageView.image = nil
+            self?.reloadImageActivityIndicator.startAnimating()
+        }
     }
     
     func set(image: UIImage) {
-        reloadImageActivityIndicator.stopAnimating()
-        imageView.image = image
+        DispatchQueue.main.async { [weak self] in
+            self?.reloadImageActivityIndicator.stopAnimating()
+            self?.imageView.image = image
+        }
     }
     
     func unableToLoad() {
-        self.present(unableToLoadAlert, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.present(self.unableToLoadAlert, animated: true)
+        }
     }
 }
